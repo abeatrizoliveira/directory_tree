@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Árvore de diretórios</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="./src/style.css">
+</head>
+
+<body>
+    <main class="page">
+        <header class="page-header">
+            <h1>Árvore de diretórios</h1>
+            <p class="lead">Escolha uma pasta do seu computador e veja a estrutura dela como lista, texto ou árvore.</p>
+        </header>
+
+        <form id="form" class="picker">
+            <input type="file" webkitdirectory id="directory" aria-label="Escolher pasta">
+            <input type="reset" value="Limpar">
+        </form>
+
+        <div class="views" role="group" aria-label="Modo de exibição">
+            <button type="button" id="btn_list">Lista</button>
+            <button type="button" id="btn_graph">Árvore</button>
+            <button type="button" id="btn_text">Markdown</button>
+
+        </div>
+
+        <section class="panel" aria-live="polite">
+            <ul id="list" class="tree"></ul>
+            <pre id="text" hidden></pre>
+            <div class="tree-graph-viewport" id="graph" hidden></div>
+        </section>
+    </main>
+
+    <script src="./src/directory.ts" type="module"></script>
+</body>
+
+</html>

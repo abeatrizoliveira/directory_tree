@@ -1,0 +1,305 @@
+:root {
+    --bg: #D5DFCC;
+    --paper: #ffffff;
+    --ink: #17151f;
+    --ink-soft: #2e2945;
+    --pink: #82977A;
+    --yellow: #B98269;
+    --mint: #7df0c4;
+    --font-sans: "Silkscreen", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+[hidden] { display: none !important; }
+
+body {
+    margin: 0;
+    background-color: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-mono);
+    font-size: 17px;
+    line-height: 1.55;
+}
+
+.page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 48px 24px 72px;
+}
+
+/* ---------- Cabeçalho ---------- */
+.page-header { margin-bottom: 32px; }
+
+h1 {
+    margin: 0 0 12px;
+    font-size: clamp(2.4rem, 7vw, 4rem);
+    font-weight: 800;
+    letter-spacing: -0.035em;
+    font-family: var(--font-sans);
+    line-height: 1;
+}
+
+.lead {
+    max-width: 56ch;
+    margin: 0;
+    color: var(--ink-soft);
+}
+
+/* ---------- Botões (estilo comum) ---------- */
+input[type="file"]::file-selector-button,
+input[type="reset"],
+.views button {
+    font-family: var(--font-mono);
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--ink);
+    background: var(--paper);
+    border: 2px solid var(--ink);
+    border-radius: 8px;
+    box-shadow: 3px 3px 0 var(--ink);
+    cursor: pointer;
+    transition: transform 0.08s, box-shadow 0.08s;
+}
+
+input[type="file"]::file-selector-button {
+    margin-right: 14px;
+    padding: 9px 16px;
+    background: var(--pink);
+}
+
+input[type="reset"] { padding: 9px 16px; }
+.views button { padding: 8px 20px; }
+
+input[type="file"]::file-selector-button:hover,
+input[type="reset"]:hover,
+.views button:hover {
+    transform: translate(-1px, -1px);
+    box-shadow: 4px 4px 0 var(--ink);
+}
+
+input[type="file"]::file-selector-button:active,
+input[type="reset"]:active,
+.views button:active {
+    transform: translate(2px, 2px);
+    box-shadow: 1px 1px 0 var(--ink);
+}
+
+/* ---------- Seletor de pasta ---------- */
+.picker {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 28px;
+}
+
+.picker input[type="file"] {
+    flex: 1 1 280px;
+    min-width: 0;
+    padding: 12px 14px;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--ink);
+    background: var(--paper);
+    border: 2px solid var(--ink);
+    border-radius: 10px;
+    box-shadow: 4px 4px 0 var(--ink);
+}
+
+/* ---------- Alternar visualização ---------- */
+.views {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 22px;
+}
+
+/* botão da visualização atual (sem precisar mexer no JS) */
+body:has(#list:not([hidden])) #btn_list,
+body:has(#text:not([hidden])) #btn_text,
+body:has(#graph:not([hidden])) #btn_graph {
+    background: var(--yellow);
+}
+
+/* ---------- Painel de resultado ---------- */
+.panel {
+    min-height: 300px;
+    padding: 22px;
+    background: var(--paper);
+    border: 2px solid var(--ink);
+    border-radius: 12px;
+    box-shadow: 6px 6px 0 var(--ink);
+}
+
+/* mensagem enquanto nada foi carregado */
+#list:empty::before,
+#text:empty::before,
+#graph:empty::before {
+    content: "Escolha uma pasta acima e a estrutura aparece aqui.";
+    display: block;
+    padding: 80px 16px;
+    text-align: center;
+    font-size: 1rem;
+    color: var(--ink-soft);
+    border: 2px dashed var(--ink);
+    border-radius: 8px;
+}
+
+#text:empty::before {
+    color: var(--terminal-ink, #d7fff0);
+    border-color: #d7fff0;
+}
+
+/* ---------- Ícones ---------- */
+.ico {
+    width: 20px;
+    height: 20px;
+    flex: none;
+    margin-right: 8px;
+    vertical-align: -4px;
+    stroke: var(--ink);
+    stroke-width: 1.7;
+    stroke-linejoin: round;
+    stroke-linecap: round;
+}
+
+.ico-root { fill: var(--pink); }
+.ico-dir  { fill: var(--yellow); }
+.ico-file { fill: var(--paper); }
+
+/* ---------- Lista em árvore ---------- */
+.tree, .tree ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.tree ul {
+    margin-left: 10px;
+    padding-left: 22px;
+}
+
+.tree li {
+    position: relative;
+    padding: 2px 0;
+    line-height: 24px;
+}
+
+.tree .name {
+    font-family: var(--font-mono);
+    font-size: 0.88rem;
+}
+
+/* linha vertical */
+.tree ul > li::before {
+    content: "";
+    position: absolute;
+    left: -12px;
+    top: 0;
+    height: 100%;
+    border-left: 2px solid var(--ink);
+}
+
+/* o último filho: a vertical para na altura do ramo */
+.tree ul > li:last-child::before {
+    height: 14px;
+}
+
+/* ramo horizontal */
+.tree ul > li::after {
+    content: "";
+    position: absolute;
+    left: -12px;
+    top: 14px;
+    width: 12px;
+    border-top: 2px solid var(--ink);
+}
+
+/* ---------- Texto ---------- */
+pre {
+    margin: 0;
+    padding: 20px;
+    overflow: auto;
+    background-color: var(--ink);
+    color: #d7fff0;
+    border-radius: 8px;
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    line-height: 1.55;
+}
+
+/* ---------- Gráfico em árvore ---------- */
+.tree-graph-viewport {
+    width: 100%;
+    overflow: auto;
+}
+
+.tree-graph {
+    position: relative;
+    margin: 4px 0;
+}
+
+.tree-graph-lines {
+    position: absolute;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+}
+
+.tree-graph-line {
+    fill: none;
+    stroke: var(--ink);
+    stroke-width: 2;
+}
+
+.tree-graph-node {
+    position: absolute;
+    width: 210px;
+    height: 36px;
+    padding: 0 10px;
+
+    display: flex;
+    align-items: center;
+
+    background: var(--paper);
+    border: 2px solid var(--ink);
+    border-radius: 8px;
+    box-shadow: 2px 2px 0 var(--ink);
+    z-index: 1;
+}
+
+.tree-graph-node.is-root { background: var(--pink); }
+.tree-graph-node.is-dir  { background: var(--yellow); }
+.tree-graph-node.is-file { background: var(--paper); }
+
+.tree-graph-node .ico { margin-right: 8px; }
+.tree-graph-node.is-root .ico-root,
+.tree-graph-node.is-dir .ico-dir { fill: var(--paper); }
+
+.tree-graph-node .name {
+    min-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+/* ---------- Acessibilidade e telas pequenas ---------- */
+:focus-visible {
+    outline: 3px solid var(--ink);
+    outline-offset: 3px;
+}
+
+@media (max-width: 560px) {
+    .page { padding: 32px 16px 48px; }
+    .panel { padding: 14px; box-shadow: 4px 4px 0 var(--ink); }
+    .views button { flex: 1; padding-inline: 8px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; }
+}
