@@ -10,6 +10,7 @@ Projeto desenvolvido para a disciplina de Estruturas de Dados, usando uma árvor
 
 - **Aplicação:** https://directory-tree.vercel.app/
 - **Slides:** https://canva.link/wlo60cchzt8r4j3
+- **Fluxo:** https://excalidraw-git-fork-shiva-kar-feat-codeblocks-excalidraw.vercel.app/#json=wfkEmk1mlesZi8kSi3_UL,YJkd3RJAr_icxzoG-FYFSw
 
 <br>
 
